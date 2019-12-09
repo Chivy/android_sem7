@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -113,48 +114,40 @@ public class EditTaskActivity extends Activity implements OnClickListener {
             case R.id.btn_update:
                 String name = nameText.getText().toString();
 
+                String startDate = String.format(
+                        Locale.getDefault(),
+                        "%d%d%d",
+                        startYear,
+                        startMonth,
+                        startDay
+                );
+
+                String endDate = String.format(
+                        Locale.getDefault(),
+                        "%d%d%d",
+                        endYear,
+                        endMonth,
+                        endDay
+                );
+
                 if (taskId > 0) {
-                    String startDate = String.format(
-                            Locale.ENGLISH,
-                            "%d-%d-%d",
-                            startDay,
-                            startMonth,
-                            startYear
-                    );
-
-                    String endDate = String.format(
-                            Locale.ENGLISH,
-                            "%d-%d-%d",
-                            endDay,
-                            endMonth,
-                            endYear
-                    );
-
-                    dbManager.updateSubTask(_id, startDate, endDate, name);
+                    try {
+                        dbManager.updateSubTask(_id, startDate, endDate, name);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 } else {
-                    String startDate = String.format(
-                            Locale.ENGLISH,
-                            "%d-%d-%d",
-                            startDay,
-                            startMonth,
-                            startYear
-                    );
-
-                    String endDate = String.format(
-                            Locale.ENGLISH,
-                            "%d-%d-%d",
-                            endDay,
-                            endMonth,
-                            endYear
-                    );
-
-                    dbManager.updateTask(
-                            _id,
-                            name,
-                            startDate,
-                            endDate,
-                            prioritySelected
-                    );
+                    try {
+                        dbManager.updateTask(
+                                _id,
+                                name,
+                                startDate,
+                                endDate,
+                                prioritySelected
+                        );
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 Intent main = new Intent(getApplicationContext(), TasksListActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -181,10 +174,11 @@ public class EditTaskActivity extends Activity implements OnClickListener {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 (view, year, monthOfYear, dayOfMonth) -> startDateText.setText(
                         String.format(
-                                "%d-%d-%d",
-                                dayOfMonth,
+                                Locale.getDefault(),
+                                "%d/%d/%d",
+                                year,
                                 monthOfYear + 1,
-                                year
+                                dayOfMonth
                         )
                 ), startYear, startMonth, startDay);
         datePickerDialog.show();
@@ -199,10 +193,11 @@ public class EditTaskActivity extends Activity implements OnClickListener {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 (view, year, monthOfYear, dayOfMonth) -> endDateText.setText(
                         String.format(
-                                "%d-%d-%d",
-                                dayOfMonth,
+                                Locale.getDefault(),
+                                "%d/%d/%d",
+                                year,
                                 monthOfYear + 1,
-                                year
+                                dayOfMonth
                         )
                 ), endYear, endMonth, endDay);
         datePickerDialog.show();

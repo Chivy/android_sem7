@@ -6,12 +6,18 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Locale;
 
 class DBManager {
+    private final SimpleDateFormat dateParser =
+            new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+    private final SimpleDateFormat dateFormatter =
+            new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
     private Context context;
     private SQLiteDatabase database;
 
@@ -24,11 +30,14 @@ class DBManager {
         database = dbHelper.getWritableDatabase();
     }
 
-    void insertTask(String name, String startDate, String endDate, int priority) {
+    void insertTask(String name, String startDate, String endDate, int priority) throws ParseException {
+        Date start = dateParser.parse(startDate);
+        Date end = dateParser.parse(endDate);
+
         ContentValues contentValue = new ContentValues();
         contentValue.put(DatabaseHelper.NAME, name);
-        contentValue.put(DatabaseHelper.START_DATE, startDate);
-        contentValue.put(DatabaseHelper.END_DATE, endDate);
+        contentValue.put(DatabaseHelper.START_DATE, dateFormatter.format(start));
+        contentValue.put(DatabaseHelper.END_DATE, dateFormatter.format(end));
         contentValue.put(DatabaseHelper.PRIORITY, priority);
         database.insert(DatabaseHelper.TASKS_TABLE_NAME, null, contentValue);
     }
@@ -68,11 +77,14 @@ class DBManager {
         return cursor;
     }
 
-    void updateTask(long _id, String name, String startDate, String endDate, int priority) {
+    void updateTask(long _id, String name, String startDate, String endDate, int priority) throws ParseException {
+        Date start = dateParser.parse(startDate);
+        Date end = dateParser.parse(endDate);
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelper.NAME, name);
-        contentValues.put(DatabaseHelper.START_DATE, startDate);
-        contentValues.put(DatabaseHelper.END_DATE, endDate);
+        contentValues.put(DatabaseHelper.START_DATE, dateFormatter.format(start));
+        contentValues.put(DatabaseHelper.END_DATE, dateFormatter.format(end));
         contentValues.put(DatabaseHelper.PRIORITY, priority);
         database.update(
                 DatabaseHelper.TASKS_TABLE_NAME,
@@ -81,11 +93,14 @@ class DBManager {
                 null);
     }
 
-    void updateSubTask(long subTaskId, String startDate, String endDate, String name) {
+    void updateSubTask(long subTaskId, String startDate, String endDate, String name) throws ParseException {
+        Date start = dateParser.parse(startDate);
+        Date end = dateParser.parse(endDate);
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelper.NAME, name);
-        contentValues.put(DatabaseHelper.START_DATE, startDate);
-        contentValues.put(DatabaseHelper.END_DATE, endDate);
+        contentValues.put(DatabaseHelper.START_DATE, dateFormatter.format(start));
+        contentValues.put(DatabaseHelper.END_DATE, dateFormatter.format(end));
         database.update(
                 DatabaseHelper.SUB_TASKS_TABLE_NAME,
                 contentValues,

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -90,31 +91,35 @@ public class AddTaskActivity extends Activity implements OnClickListener {
         if (v.getId() == R.id.add_task) {
             final String name = nameEditText.getText().toString();
 
+            String startDate = String.format(
+                    Locale.ENGLISH,
+                    "%d%d%d",
+                    startYear,
+                    startMonth,
+                    startDay
+            );
+
+            String endDate = String.format(
+                    Locale.ENGLISH,
+                    "%d%d%d",
+                    endYear,
+                    endMonth,
+                    endDay
+            );
+
             if (taskId > 0) {
                 dbManager.insertSubTask(taskId, name);
             } else {
-                String startDate = String.format(
-                        Locale.ENGLISH,
-                        "%d-%d-%d",
-                        startYear,
-                        startMonth,
-                        startDay
-                );
-
-                String endDate = String.format(
-                        Locale.ENGLISH,
-                        "%d-%d-%d",
-                        endDay,
-                        endMonth,
-                        endYear
-                );
-
-                dbManager.insertTask(
-                        name,
-                        startDate,
-                        endDate,
-                        prioritySelected
-                );
+                try {
+                    dbManager.insertTask(
+                            name,
+                            startDate,
+                            endDate,
+                            prioritySelected
+                    );
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
 
             Intent main = new Intent(AddTaskActivity.this, TasksListActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -132,10 +137,11 @@ public class AddTaskActivity extends Activity implements OnClickListener {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 (view, year, monthOfYear, dayOfMonth) ->
                         txtStartDate.setText(String.format(
-                                "%d-%d-%d",
-                                dayOfMonth,
+                                Locale.getDefault(),
+                                "%d/%d/%d",
+                                year,
                                 monthOfYear + 1,
-                                year)
+                                dayOfMonth)
                         ), startYear, startMonth, startDay);
         datePickerDialog.show();
     }
@@ -148,10 +154,11 @@ public class AddTaskActivity extends Activity implements OnClickListener {
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 (view, year, monthOfYear, dayOfMonth) -> txtEndDate.setText(String.format(
-                        "%d %d %d",
-                        dayOfMonth,
+                        Locale.getDefault(),
+                        "%d/%d/%d",
+                        year,
                         monthOfYear + 1,
-                        year)
+                        dayOfMonth)
                 ), endYear, endMonth, endDay);
         datePickerDialog.show();
     }

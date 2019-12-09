@@ -26,11 +26,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Creating table query
     private static final String CREATE_TABLE_TASKS = "create table " + TASKS_TABLE_NAME + "(" + _ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME + " TEXT NOT NULL, " +
-            START_DATE + " TEXT NOT NULL, " + END_DATE + " TEXT NOT NULL, " + PRIORITY + ");";
+            START_DATE + " VARCHAR(20) NOT NULL, " + END_DATE + " VARCHAR(20) NOT NULL, " + PRIORITY + ");";
 
     private static final String CREATE_TABLE_SUB_TASKS = "create table " + SUB_TASKS_TABLE_NAME + "(" + _ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME + " TEXT NOT NULL, " +
-            START_DATE + " TEXT NOT NULL, " + END_DATE + " TEXT NOT NULL, " + TASK_ID + ");";
+            START_DATE + " VARCHAR(20) NOT NULL, " + END_DATE + " VARCHAR(20) NOT NULL, " + TASK_ID + ");";
 
     DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);

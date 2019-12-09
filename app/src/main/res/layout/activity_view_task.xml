@@ -35,7 +35,8 @@
         android:maxLines="1"
         android:padding="3dp"
         android:textSize="17sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/endDate"
@@ -46,7 +47,8 @@
         android:maxLines="1"
         android:padding="3dp"
         android:textSize="17sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="invisible"/>
     <TextView
         android:id="@+id/priority"
         android:layout_width="wrap_content"
