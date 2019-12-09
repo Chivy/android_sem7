@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Tasks</string>
+    <string name="tasks">Tasks</string>
+    <string name="sub_tasks">SubTasks</string>
+    <string name="enter_name">Task Name</string>
+    <string name="add">Add</string>
+    <string name="btn_update">Update</string>
+    <string name="btn_subtasks">Subtasks</string>
+    <string name="empty_list_text">No tasks found</string>
+    <string name="enter_title">Name</string>
+    <string name="add_task">Add Task</string>
+    <string name="add_sub_task">Add SubTask</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="edit_sub_task">Edit SubTask</string>
+</resources>
