@@ -13,10 +13,10 @@ import java.util.Locale;
 
 class DBManager {
     private final SimpleDateFormat dateParser =
-            new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
 
     private final SimpleDateFormat dateFormatter =
-            new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
 
     private Context context;
     private SQLiteDatabase database;
@@ -42,9 +42,14 @@ class DBManager {
         database.insert(DatabaseHelper.TASKS_TABLE_NAME, null, contentValue);
     }
 
-    void insertSubTask(long taskId, String name) {
+    void insertSubTask(long taskId, String startDate, String endDate, String name) throws ParseException {
+        Date start = dateParser.parse(startDate);
+        Date end = dateParser.parse(endDate);
+
         ContentValues contentValue = new ContentValues();
         contentValue.put(DatabaseHelper.TASK_ID, taskId);
+        contentValue.put(DatabaseHelper.START_DATE, dateFormatter.format(start));
+        contentValue.put(DatabaseHelper.END_DATE, dateFormatter.format(end));
         contentValue.put(DatabaseHelper.NAME, name);
         database.insert(DatabaseHelper.SUB_TASKS_TABLE_NAME, null, contentValue);
     }
@@ -68,6 +73,8 @@ class DBManager {
         String[] columns = new String[]{
                 DatabaseHelper._ID,
                 DatabaseHelper.NAME,
+                DatabaseHelper.START_DATE,
+                DatabaseHelper.END_DATE,
                 DatabaseHelper.TASK_ID
         };
         Cursor cursor = database.query(DatabaseHelper.SUB_TASKS_TABLE_NAME, columns, DatabaseHelper.TASK_ID + " = " + taskId, null, null, null, null);

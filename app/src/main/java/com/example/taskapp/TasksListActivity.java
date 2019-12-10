@@ -5,19 +5,13 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
-import org.w3c.dom.Text;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class TasksListActivity extends AppCompatActivity {
@@ -42,9 +36,14 @@ public class TasksListActivity extends AppCompatActivity {
 
         from.add(DatabaseHelper._ID);
         from.add(DatabaseHelper.NAME);
+        from.add(DatabaseHelper.START_DATE);
+        from.add(DatabaseHelper.END_DATE);
+
 
         to.add(R.id.id);
         to.add(R.id.name);
+        to.add(R.id.startDate);
+        to.add(R.id.endDate);
 
         if (taskId > 0) {
             setTitle(R.string.sub_tasks);
@@ -53,12 +52,8 @@ public class TasksListActivity extends AppCompatActivity {
             setTitle(R.string.tasks);
             cursor = dbManager.fetchTasks();
             from.add(DatabaseHelper.PRIORITY);
-            from.add(DatabaseHelper.START_DATE);
-            from.add(DatabaseHelper.END_DATE);
 
             to.add(R.id.priority);
-            to.add(R.id.startDate);
-            to.add(R.id.endDate);
         }
 
         ListView listView = findViewById(R.id.list_view);

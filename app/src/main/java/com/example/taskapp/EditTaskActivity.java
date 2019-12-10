@@ -9,13 +9,10 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -114,21 +111,8 @@ public class EditTaskActivity extends Activity implements OnClickListener {
             case R.id.btn_update:
                 String name = nameText.getText().toString();
 
-                String startDate = String.format(
-                        Locale.getDefault(),
-                        "%d%d%d",
-                        startYear,
-                        startMonth,
-                        startDay
-                );
-
-                String endDate = String.format(
-                        Locale.getDefault(),
-                        "%d%d%d",
-                        endYear,
-                        endMonth,
-                        endDay
-                );
+                String startDate = startDateText.getText().toString();
+                String endDate = endDateText.getText().toString();
 
                 if (taskId > 0) {
                     try {

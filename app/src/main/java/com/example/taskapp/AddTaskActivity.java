@@ -12,9 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -91,24 +91,32 @@ public class AddTaskActivity extends Activity implements OnClickListener {
         if (v.getId() == R.id.add_task) {
             final String name = nameEditText.getText().toString();
 
-            String startDate = String.format(
-                    Locale.ENGLISH,
-                    "%d%d%d",
-                    startYear,
-                    startMonth,
-                    startDay
-            );
+            String startDate = txtStartDate.getText().toString();
+            String endDate = txtEndDate.getText().toString();
 
-            String endDate = String.format(
-                    Locale.ENGLISH,
-                    "%d%d%d",
-                    endYear,
-                    endMonth,
-                    endDay
-            );
+            if (name.trim().isEmpty()) {
+                Toast.makeText(this, "Field name cannot be empty!", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (startDate.trim().isEmpty()) {
+                Toast.makeText(this, "Field start date cannot be empty!", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (endDate.trim().isEmpty()) {
+                Toast.makeText(this, "Field end date cannot be empty!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
 
             if (taskId > 0) {
-                dbManager.insertSubTask(taskId, name);
+                try {
+                    dbManager.insertSubTask(
+                            taskId,
+                            startDate,
+                            endDate,
+                            name
+                    );
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             } else {
                 try {
                     dbManager.insertTask(
